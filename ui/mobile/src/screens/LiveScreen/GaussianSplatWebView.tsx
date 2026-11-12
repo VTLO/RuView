@@ -1,7 +1,7 @@
 import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import type { RefObject } from 'react';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
-import GAUSSIAN_SPLATS_HTML from '@/assets/webview/gaussian-splats.html';
+import { LIVE_XRAY_HTML } from '@/assets/webview/liveXray.generated';
 
 type GaussianSplatWebViewProps = {
   onMessage: (event: WebViewMessageEvent) => void;
@@ -16,12 +16,10 @@ export const GaussianSplatWebView = ({
   webViewRef,
   onLayout,
 }: GaussianSplatWebViewProps) => {
-  const html = typeof GAUSSIAN_SPLATS_HTML === 'string' ? GAUSSIAN_SPLATS_HTML : '';
-
   return (
     <WebView
       ref={webViewRef}
-      source={{ html }}
+      source={{ html: LIVE_XRAY_HTML }}
       originWhitelist={['*']}
       allowFileAccess={false}
       javaScriptEnabled

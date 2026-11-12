@@ -44,7 +44,7 @@ const WebLiveViewer = ({ frame, onReady, onFps, onError }: ViewerProps) => {
 };
 
 const NativeLiveViewer = ({ frame, onReady, onFps, onError }: ViewerProps) => {
-  const webViewRef = useRef(null);
+  const webViewRef = useRef<any>(null);
   const [WVComponent, setWVComponent] = useState<React.ComponentType<any> | null>(null);
 
   useEffect(() => {
@@ -55,6 +55,15 @@ const NativeLiveViewer = ({ frame, onReady, onFps, onError }: ViewerProps) => {
       onError('WebView not available on this platform');
     }
   }, [onError]);
+
+  useEffect(() => {
+    if (!webViewRef.current || !frame) return;
+    try {
+      const frameJson = JSON.stringify(frame).replace(/"/g, '\\"');
+      const script = `window.__xraySetFrame(${frameJson}); true;`;
+      webViewRef.current.injectJavaScript(script);
+    } catch { /* ignore injection errors */ }
+  }, [frame]);
 
   if (!WVComponent) return null;
 
