@@ -1,25 +1,20 @@
-import { valueToColor } from '@/utils/colorMap';
+import { RAMP_HIGH, RAMP_LOW, RAMP_MID, valueToColor } from '@/utils/colorMap';
 
 describe('valueToColor', () => {
-  it('returns blue at 0', () => {
-    const [r, g, b] = valueToColor(0);
-    expect(r).toBe(0);
-    expect(g).toBe(0);
-    expect(b).toBe(1);
+  const expectColor = (actual: number[], expected: number[]) => {
+    actual.forEach((c, i) => expect(c).toBeCloseTo(expected[i]));
+  };
+
+  it('returns charcoal at 0', () => {
+    expectColor(valueToColor(0), RAMP_LOW);
   });
 
-  it('returns green at 0.5', () => {
-    const [r, g, b] = valueToColor(0.5);
-    expect(r).toBe(0);
-    expect(g).toBe(1);
-    expect(b).toBe(0);
+  it('returns the accent orange at 0.5', () => {
+    expectColor(valueToColor(0.5), RAMP_MID);
   });
 
-  it('returns red at 1', () => {
-    const [r, g, b] = valueToColor(1);
-    expect(r).toBe(1);
-    expect(g).toBe(0);
-    expect(b).toBe(0);
+  it('returns white at 1', () => {
+    expectColor(valueToColor(1), RAMP_HIGH);
   });
 
   it('clamps values below 0 to the same as 0', () => {
@@ -38,18 +33,16 @@ describe('valueToColor', () => {
     expect(b).toBe(b1);
   });
 
-  it('interpolates between blue and green for 0.25', () => {
-    const [r, g, b] = valueToColor(0.25);
-    expect(r).toBe(0);
-    expect(g).toBeCloseTo(0.5);
-    expect(b).toBeCloseTo(0.5);
+  it('interpolates between charcoal and orange for 0.25', () => {
+    expectColor(valueToColor(0.25), RAMP_LOW.map((c, i) => (c + RAMP_MID[i]) / 2));
   });
 
-  it('interpolates between green and red for 0.75', () => {
-    const [r, g, b] = valueToColor(0.75);
-    expect(r).toBeCloseTo(0.5);
-    expect(g).toBeCloseTo(0.5);
-    expect(b).toBe(0);
+  it('interpolates between orange and white for 0.75', () => {
+    expectColor(valueToColor(0.75), RAMP_MID.map((c, i) => (c + RAMP_HIGH[i]) / 2));
+  });
+
+  it('treats NaN as quiet', () => {
+    expectColor(valueToColor(Number.NaN), RAMP_LOW);
   });
 
   it('returns a 3-element tuple', () => {

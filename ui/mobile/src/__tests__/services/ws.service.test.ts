@@ -102,6 +102,42 @@ describe('WsService', () => {
     });
   });
 
+  describe('demo mode', () => {
+    it('presents generated frames as a live ESP32 feed without opening a socket', () => {
+      const OrigWebSocket = globalThis.WebSocket;
+      const opened: string[] = [];
+      globalThis.WebSocket = class {
+        static OPEN = 1;
+        static CONNECTING = 0;
+        constructor(url: string) {
+          opened.push(url);
+        }
+      } as any;
+      try {
+        const ws = createWsService();
+        const frames: Array<{ source?: string }> = [];
+        ws.subscribe((f: { source?: string }) => frames.push(f));
+        ws.connect('http://192.168.1.10:3000', { demo: true });
+        jest.advanceTimersByTime(1200);
+
+        expect(opened).toEqual([]);
+        expect(ws.getStatus()).toBe('connected');
+        expect(frames.length).toBeGreaterThan(0);
+        expect(frames.every((f) => f.source === 'esp32')).toBe(true);
+        ws.disconnect();
+      } finally {
+        globalThis.WebSocket = OrigWebSocket;
+      }
+    });
+
+    it('still flags fallback simulation as simulated outside demo mode', () => {
+      const ws = createWsService();
+      ws.connect('');
+      expect(ws.getStatus()).toBe('simulated');
+      ws.disconnect();
+    });
+  });
+
   describe('connect with empty URL', () => {
     it('falls back to simulation mode when URL is empty', () => {
       const ws = createWsService();

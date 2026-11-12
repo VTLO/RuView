@@ -90,7 +90,7 @@ const RouterMarker = ({ cellSize }: { cellSize: number }) => {
   return (
     <Polygon
       points={`${cx},${cy - radius} ${cx + radius},${cy} ${cx},${cy + radius} ${cx - radius},${cy}`}
-      fill="rgba(50, 184, 198, 0.25)"
+      fill="rgba(193, 86, 50, 0.3)"
       stroke={colors.accent}
       strokeWidth={2}
     />

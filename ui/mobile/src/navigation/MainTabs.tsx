@@ -50,7 +50,7 @@ export const MainTabs = () => {
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
-          backgroundColor: '#0D1117',
+          backgroundColor: colors.bg,
           borderTopColor: colors.border,
           borderTopWidth: 1,
         },

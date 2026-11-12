@@ -19,7 +19,7 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background: #0a0e1a;
+        background: #000000;
         touch-action: none;
       }
 
@@ -132,7 +132,7 @@
 
             // Scene
             this.scene = new THREE.Scene();
-            this.scene.background = new THREE.Color(0x0a0e1a);
+            this.scene.background = new THREE.Color(0x000000);
 
             // Camera — perspective looking down at the room
             this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 0.1, 200);
@@ -146,10 +146,10 @@
             container.appendChild(this.renderer.domElement);
 
             // Lights
-            const ambient = new THREE.AmbientLight(0x9ec7ff, 0.35);
+            const ambient = new THREE.AmbientLight(0xffffff, 0.35);
             this.scene.add(ambient);
 
-            const directional = new THREE.DirectionalLight(0x9ec7ff, 0.65);
+            const directional = new THREE.DirectionalLight(0xffffff, 0.65);
             directional.position.set(4, 10, 6);
             directional.castShadow = false;
             this.scene.add(directional);
@@ -190,7 +190,7 @@
 
           _createRoom(THREE) {
             // Floor grid (on y = 0), 20 units
-            const grid = new THREE.GridHelper(20, 20, 0x1a3a4a, 0x0d1f28);
+            const grid = new THREE.GridHelper(20, 20, 0x6b2e1a, 0x1c1c1c);
             grid.position.y = 0;
             this.scene.add(grid);
 
@@ -199,7 +199,7 @@
             const edges = new THREE.EdgesGeometry(boxGeo);
             const line = new THREE.LineSegments(
               edges,
-              new THREE.LineBasicMaterial({ color: 0x1a4a5a, opacity: 0.3, transparent: true }),
+              new THREE.LineBasicMaterial({ color: 0x6b2e1a, opacity: 0.3, transparent: true }),
             );
             line.position.y = 3;
             this.scene.add(line);
@@ -250,14 +250,14 @@
           _createNodeMarkers(THREE) {
             // Router at center — green sphere
             const routerGeo = new THREE.SphereGeometry(0.3, 16, 16);
-            const routerMat = new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.8 });
+            const routerMat = new THREE.MeshBasicMaterial({ color: 0xc15632, transparent: true, opacity: 0.8 });
             this.routerMarker = new THREE.Mesh(routerGeo, routerMat);
             this.routerMarker.position.set(0, 0.5, 0);
             this.scene.add(this.routerMarker);
 
             // ESP32 node — cyan sphere (default position, updated from data)
             const nodeGeo = new THREE.SphereGeometry(0.25, 16, 16);
-            const nodeMat = new THREE.MeshBasicMaterial({ color: 0x00ccff, transparent: true, opacity: 0.8 });
+            const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
             this.nodeMarker = new THREE.Mesh(nodeGeo, nodeMat);
             this.nodeMarker.position.set(2, 0.5, 1.5);
             this.scene.add(this.nodeMarker);

@@ -31,7 +31,7 @@ export const ThemePicker = ({ value, onChange }: ThemePickerProps) => {
               borderRadius: 8,
               borderWidth: 1,
               borderColor: isActive ? colors.accent : colors.border,
-              backgroundColor: isActive ? `${colors.accent}22` : '#0D1117',
+              backgroundColor: isActive ? `${colors.accent}22` : colors.surface,
               paddingVertical: 10,
               alignItems: 'center',
             }}

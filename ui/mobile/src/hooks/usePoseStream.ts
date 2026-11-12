@@ -21,8 +21,8 @@ export function usePoseStream(): UsePoseStreamResult {
       usePoseStore.getState().handleFrame(frame);
     });
 
-    // Auto-connect to sensing server on mount; an empty URL makes wsService stream simulated frames.
-    wsService.connect(demoMode ? '' : serverUrl);
+    // Auto-connect to sensing server on mount (demo mode streams generated frames as a live feed).
+    wsService.connect(serverUrl, { demo: demoMode });
 
     return () => {
       unsubscribe();

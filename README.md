@@ -1,10 +1,19 @@
 # π RuView
 
 <p align="center">
-  <a href="https://x.com/rUv/status/2037556932802761004">
-    <img src="assets/ruview-small-gemini.jpg" alt="RuView - WiFi DensePose" width="100%">
+  <a href="releases/mobile/">
+    <img src="assets/vtlo-eyesofgod-banner.gif" alt="VTLO_EyesOfGod — see through walls with WiFi" width="100%">
   </a>
 </p>
+
+### ⬇ Download VTLO_EyesOfGod
+
+| Platform | Download | Notes |
+|----------|----------|-------|
+| **Android** (arm64) | [VTLO_EyesOfGod-1.0.0-android-arm64.apk](releases/mobile/VTLO_EyesOfGod-1.0.0-android-arm64.apk?raw=1) | Standalone — sideload and open. Runs the built-in sensor feed out of the box; point it at a sensing server in **Settings**. |
+| **Web** | [VTLO_EyesOfGod-1.0.0-web.zip](releases/mobile/VTLO_EyesOfGod-1.0.0-web.zip?raw=1) | Static site — unzip and serve over HTTP (`npx serve .`). |
+
+Checksums: [`releases/mobile/SHA256SUMS`](releases/mobile/SHA256SUMS) · Source: [`ui/mobile`](ui/mobile/)
 
 > **Beta Software** — Under active development. APIs and firmware may change. Known limitations:
 > - ESP32-C3 and original ESP32 are not supported (single-core, insufficient for CSI DSP)

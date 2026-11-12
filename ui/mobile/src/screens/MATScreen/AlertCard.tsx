@@ -58,7 +58,7 @@ export const AlertCard = ({ alert }: AlertCardProps) => {
   return (
     <View
       style={{
-        backgroundColor: '#111827',
+        backgroundColor: colors.surface,
         borderWidth: 1,
         borderColor: `${severity.color}55`,
         padding: spacing.md,

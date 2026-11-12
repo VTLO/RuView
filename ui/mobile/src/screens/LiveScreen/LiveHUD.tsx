@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { memo, useCallback, useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { StatusDot } from '@/components/StatusDot';
@@ -7,6 +7,9 @@ import { ThemedText } from '@/components/ThemedText';
 import { formatConfidence, formatRssi } from '@/utils/formatters';
 import { colors, spacing } from '@/theme';
 import type { ConnectionStatus } from '@/types/sensing';
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const LOGO = require('../../assets/images/logo.png');
 
 type LiveMode = 'LIVE' | 'SIM' | 'RSSI';
 
@@ -54,7 +57,8 @@ export const LiveHUD = memo(
       <Pressable style={StyleSheet.absoluteFill} onPress={togglePanel}>
         <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, animatedPanelStyle]}>
           {/* App title */}
-          <View style={styles.topLeft}>
+          <View style={[styles.topLeft, styles.row]}>
+            <Image source={LOGO} style={styles.logo} accessibilityIgnoresInvertColors />
             <ThemedText preset="labelLg" style={styles.appTitle}>
               VTLO_EyesOfGod
             </ThemedText>
@@ -103,6 +107,10 @@ export const LiveHUD = memo(
 );
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 26,
+    height: 26,
+  },
   topLeft: {
     position: 'absolute',
     top: spacing.md,
@@ -133,9 +141,9 @@ const styles = StyleSheet.create({
     bottom: spacing.sm,
     minHeight: 72,
     borderRadius: 12,
-    backgroundColor: 'rgba(10,14,26,0.72)',
+    backgroundColor: 'rgba(0,0,0,0.78)',
     borderWidth: 1,
-    borderColor: 'rgba(50,184,198,0.35)',
+    borderColor: 'rgba(193, 86, 50,0.55)',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     flexDirection: 'row',

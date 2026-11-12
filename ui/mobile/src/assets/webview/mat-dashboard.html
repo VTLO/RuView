@@ -14,8 +14,8 @@
         margin: 0;
         width: 100%;
         height: 100%;
-        background: #0a0e1a;
-        color: #e5e7eb;
+        background: #000000;
+        color: #ffffff;
         font-family: 'Courier New', 'Consolas', monospace;
         overflow: hidden;
       }
@@ -30,7 +30,7 @@
       }
 
       #status {
-        color: #6dd4df;
+        color: #c15632;
         font-size: 12px;
         letter-spacing: 0.5px;
       }
@@ -38,10 +38,10 @@
       #mapCanvas {
         flex: 1;
         width: 100%;
-        border: 1px solid #1e293b;
+        border: 1px solid #2b2b2b;
         border-radius: 8px;
         min-height: 180px;
-        background: #0a0e1a;
+        background: #000000;
       }
     </style>
   </head>
@@ -61,7 +61,7 @@
           Unknown: 4,
         };
 
-        const TRIAGE_COLOR = ['#ff0000', '#ffcc00', '#00cc00', '#111111', '#888888'];
+        const TRIAGE_COLOR = ['#e5484d', '#e8a33d', '#4caf7a', '#111111', '#888888'];
         const PRIORITY = { Critical: 0, High: 1, Medium: 2, Low: 3 };
 
         const toRgba = (status) => TRIAGE_COLOR[status] || TRIAGE_COLOR[4];
@@ -305,7 +305,7 @@
                 location_x: survivor.x,
                 location_y: survivor.y,
                 created_at: new Date().toISOString(),
-                priority_color: survivor.triage_status === TRIAGE.Immediate ? '#ff0000' : '#ff8c00',
+                priority_color: survivor.triage_status === TRIAGE.Immediate ? '#e5484d' : '#e8a33d',
               };
 
               this.alerts.set(alertId, alert);
@@ -337,8 +337,8 @@
 
           renderZones(ctx) {
             for (const zone of this.zones.values()) {
-              const fill = 'rgba(0, 150, 255, 0.3)';
-              ctx.strokeStyle = '#0096ff';
+              const fill = 'rgba(193, 86, 50, 0.28)';
+              ctx.strokeStyle = '#c15632';
               ctx.fillStyle = fill;
               ctx.lineWidth = 2;
 
@@ -365,7 +365,7 @@
               const radius = survivor.is_deteriorating ? 11 : 9;
 
               if (survivor.triage_status === TRIAGE.Immediate) {
-                ctx.fillStyle = 'rgba(255, 0, 0, 0.26)';
+                ctx.fillStyle = 'rgba(229, 72, 77, 0.26)';
                 ctx.beginPath();
                 ctx.arc(survivor.x, survivor.y, radius + 6, 0, Math.PI * 2);
                 ctx.fill();
@@ -392,10 +392,10 @@
 
           render(ctx, width, height) {
             ctx.clearRect(0, 0, width, height);
-            ctx.fillStyle = '#0a0e1a';
+            ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, width, height);
 
-            ctx.strokeStyle = '#1f2a3d';
+            ctx.strokeStyle = '#1c1c1c';
             ctx.lineWidth = 1;
             const grid = 40;
             for (let x = 0; x <= width; x += grid) {

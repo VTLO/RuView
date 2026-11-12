@@ -23,7 +23,7 @@ const GlowCard = ({ title, children }: GlowCardProps) => {
   return (
     <View
       style={{
-        backgroundColor: '#0F141E',
+        backgroundColor: colors.surface,
         borderRadius: 14,
         borderWidth: 1,
         borderColor: `${colors.accent}35`,

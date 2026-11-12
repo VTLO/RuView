@@ -3,6 +3,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 import Animated, { interpolateColor, useAnimatedProps, useSharedValue, withTiming, type SharedValue } from 'react-native-reanimated';
 import Svg, { Circle, G, Rect } from 'react-native-svg';
 import { colors } from '../theme/colors';
+import { valueToColor } from '../utils/colorMap';
 
 type Point = {
   x: number;
@@ -20,24 +21,8 @@ const GRID_DIMENSION = 20;
 const CELLS = GRID_DIMENSION * GRID_DIMENSION;
 
 const toColor = (value: number): string => {
-  const clamped = Math.max(0, Math.min(1, value));
-  let r: number;
-  let g: number;
-  let b: number;
-
-  if (clamped < 0.5) {
-    const t = clamped * 2;
-    r = Math.round(255 * 0);
-    g = Math.round(255 * t);
-    b = Math.round(255 * (1 - t));
-  } else {
-    const t = (clamped - 0.5) * 2;
-    r = Math.round(255 * t);
-    g = Math.round(255 * (1 - t));
-    b = 0;
-  }
-
-  return `rgb(${r}, ${g}, ${b})`;
+  const [r, g, b] = valueToColor(value);
+  return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
 };
 
 const AnimatedRect = Animated.createAnimatedComponent(Rect);

@@ -73,7 +73,18 @@ cd ui/mobile
 npm run build:web:demo   # -> dist/web (static files; serve over HTTP, e.g. `npx serve dist/web`)
 ```
 
-`EXPO_PUBLIC_DEMO_MODE=true` makes **Demo Mode** the default: the app never contacts a server and streams simulated data on every tab. Users can switch it off in **Settings → Server → Demo Mode** to connect to a real sensing server.
+`EXPO_PUBLIC_DEMO_MODE=true` makes **Demo Mode** the default: the app never contacts a server and runs the built-in sensor feed on every tab, presented as a live connection (no simulation banners). Switch it off in **Settings → Server → Demo Mode** to connect to a real sensing server; when a real server is unreachable, the app still falls back to clearly flagged simulated data.
+
+#### Standalone Android APK
+
+```bash
+cd ui/mobile
+npx expo prebuild --platform android
+cd android && EXPO_PUBLIC_DEMO_MODE=true ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a
+# -> android/app/build/outputs/apk/release/app-release.apk
+```
+
+Needs the Android SDK (platform 36, build-tools 36.0.0, NDK 27.1.12297006) and **both JDK 17 and JDK 21**. Prebuilt downloads live in [`releases/mobile/`](../../releases/mobile/).
 
 ### Android
 

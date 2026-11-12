@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    color: '#94A3B8',
+    color: colors.textSecondary,
     letterSpacing: 1,
   },
   note: {

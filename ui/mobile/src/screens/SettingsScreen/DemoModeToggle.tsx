@@ -13,14 +13,14 @@ export const DemoModeToggle = ({ enabled, onChange }: DemoModeToggleProps) => {
       <View style={{ flex: 1 }}>
         <ThemedText preset="bodyMd">Demo Mode</ThemedText>
         <ThemedText preset="bodySm" style={{ color: colors.textSecondary }}>
-          Use simulated sensing data instead of a server
+          Built-in sensor feed — no server required
         </ThemedText>
       </View>
       <Switch
         accessibilityLabel="Demo mode"
         value={enabled}
         onValueChange={onChange}
-        trackColor={{ true: colors.simulated, false: colors.surfaceAlt }}
+        trackColor={{ true: colors.accent, false: colors.surfaceAlt }}
         thumbColor={colors.textPrimary}
       />
     </View>

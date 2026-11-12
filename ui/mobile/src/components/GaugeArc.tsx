@@ -65,7 +65,7 @@ export const GaugeArc = ({ value, min = 0, max, label, unit, color, colorTo, siz
             cy={size / 2}
             r={radius}
             strokeWidth={strokeWidth}
-            stroke="#1E293B"
+            stroke="#2B2B2B"
             fill="none"
             strokeDasharray={`${arcLength} ${circumference}`}
             strokeLinecap="round"
@@ -85,7 +85,7 @@ export const GaugeArc = ({ value, min = 0, max, label, unit, color, colorTo, siz
         <SvgText
           x={size / 2}
           y={size / 2 - 8}
-          fill="#E2E8F0"
+          fill="#FFFFFF"
           fontSize={Math.round(size * 0.16)}
           fontFamily="Courier New"
           fontWeight="700"
@@ -96,7 +96,7 @@ export const GaugeArc = ({ value, min = 0, max, label, unit, color, colorTo, siz
         <SvgText
           x={size / 2}
           y={size / 2 + 18}
-          fill="#94A3B8"
+          fill="#A8A8A8"
           fontSize={Math.round(size * 0.085)}
           fontFamily="Courier New"
           textAnchor="middle"

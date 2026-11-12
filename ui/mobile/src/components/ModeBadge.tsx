@@ -13,22 +13,22 @@ const modeStyle: Record<
   }
 > = {
   CSI: {
-    background: 'rgba(50, 184, 198, 0.25)',
+    background: 'rgba(193, 86, 50, 0.22)',
     border: colors.accent,
     color: colors.accent,
   },
   RSSI: {
-    background: 'rgba(255, 165, 2, 0.2)',
+    background: 'rgba(232, 163, 61, 0.2)',
     border: colors.warn,
     color: colors.warn,
   },
   SIM: {
-    background: 'rgba(255, 71, 87, 0.18)',
+    background: 'rgba(229, 72, 77, 0.18)',
     border: colors.simulated,
     color: colors.simulated,
   },
   LIVE: {
-    background: 'rgba(46, 213, 115, 0.18)',
+    background: 'rgba(255, 255, 255, 0.12)',
     border: colors.connected,
     color: colors.connected,
   },

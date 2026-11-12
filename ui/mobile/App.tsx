@@ -19,8 +19,8 @@ export default function App() {
   useEffect(() => {
     apiService.setBaseUrl(serverUrl);
     const unsubscribe = wsService.subscribe(usePoseStore.getState().handleFrame);
-    // Demo mode: an empty URL makes wsService stream simulated frames without a server.
-    wsService.connect(demoMode ? '' : serverUrl);
+    // Demo mode: wsService streams generated frames presented as a live feed, without a server.
+    wsService.connect(serverUrl, { demo: demoMode });
 
     return () => {
       unsubscribe();
@@ -53,11 +53,11 @@ export default function App() {
     ...DarkTheme,
     colors: {
       ...DarkTheme.colors,
-      background: '#0A0E1A',
-      card: '#0D1117',
-      text: '#E2E8F0',
-      border: '#1E293B',
-      primary: '#32B8C6',
+      background: '#000000',
+      card: '#000000',
+      text: '#FFFFFF',
+      border: '#2B2B2B',
+      primary: '#C15632',
     },
   };
 

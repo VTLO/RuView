@@ -36,6 +36,6 @@ export const GaussianSplatWebView = ({
 const styles = StyleSheet.create({
   webView: {
     flex: 1,
-    backgroundColor: '#0A0E1A',
+    backgroundColor: '#000000',
   },
 });

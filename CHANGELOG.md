@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   between simulated data and a real sensing server on any platform. The MAT dashboard now works on web via
   an iframe implementation of the WebView message bridge (`MatWebView.web.tsx`). App renamed to
   **VTLO_EyesOfGod** with a new icon set.
+- **VTLO_EyesOfGod visual identity + downloads.** UI restyled to the icon's palette (black field, white
+  line art, burnt-orange `#C15632` accent) across theme tokens, 3D Live scene, heat ramp
+  (charcoal → orange → white), MAT and splat webviews; logo in the Live header. Demo Mode now presents the
+  built-in feed as a live ESP32 connection (no simulation banners/overlay); fallback simulation outside
+  Demo Mode is still flagged. Prebuilt standalone Android APK and web zip published under
+  `releases/mobile/` (with `SHA256SUMS`), and the README hero is a new animated banner
+  (`assets/vtlo-eyesofgod-banner.gif`).
 - **Real-time CSI introspection / low-latency tap on `wifi-densepose-sensing-server` (ADR-099).**
   New `wifi_densepose_sensing_server::introspection` module wires
   [midstream](https://github.com/ruvnet/midstream)'s `temporal-attractor` (Lyapunov +

@@ -39,25 +39,25 @@ const BASE_POSE: [number, number, number][] = [
   [ 0.12, 0.04, 0.00],  // 16 right ankle
 ];
 
-// DensePose-style body part colors
+// Body part colors: monochrome line-art palette with burnt-orange accents (matches app icon)
 const DENSEPOSE_COLORS: Record<string, number> = {
-  head:       0xf4a582,
-  neck:       0xd6604d,
-  torsoFront: 0x92c5de,
-  torsoSide:  0x4393c3,
-  pelvis:     0x2166ac,
-  lUpperArm:  0xd73027,
-  rUpperArm:  0xf46d43,
-  lForearm:   0xfdae61,
-  rForearm:   0xfee090,
-  lHand:      0xffffbf,
-  rHand:      0xffffbf,
-  lThigh:     0xa6d96a,
-  rThigh:     0x66bd63,
-  lShin:      0x1a9850,
-  rShin:      0x006837,
-  lFoot:      0x762a83,
-  rFoot:      0x9970ab,
+  head:       0xffffff,
+  neck:       0xbdbdbd,
+  torsoFront: 0xf2f2f2,
+  torsoSide:  0x9a9a9a,
+  pelvis:     0x6e6e6e,
+  lUpperArm:  0xdadada,
+  rUpperArm:  0xcfcfcf,
+  lForearm:   0xb5b5b5,
+  rForearm:   0xadadad,
+  lHand:      0xffffff,
+  rHand:      0xffffff,
+  lThigh:     0xd0d0d0,
+  rThigh:     0xc4c4c4,
+  lShin:      0x8f8f8f,
+  rShin:      0x858585,
+  lFoot:      0xc15632,
+  rFoot:      0xc15632,
 };
 
 // Per-person tint offsets to visually distinguish multiple bodies
@@ -152,14 +152,14 @@ function createBodyGroup(scene: THREE.Scene, personIdx: number): BodyGroup {
 
   // Eyes
   const eyeGeo = new THREE.SphereGeometry(0.015, 8, 6);
-  const eyeMat = new THREE.MeshBasicMaterial({ color: 0xeeffff });
+  const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
   const eyeR = new THREE.Mesh(eyeGeo, eyeMat.clone());
   eyeL.visible = eyeR.visible = false;
   scene.add(eyeL); scene.add(eyeR);
 
   const pupilGeo = new THREE.SphereGeometry(0.008, 6, 4);
-  const pupilMat = new THREE.MeshBasicMaterial({ color: 0x112233 });
+  const pupilMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
   const pupilL = new THREE.Mesh(pupilGeo, pupilMat);
   const pupilR = new THREE.Mesh(pupilGeo, pupilMat.clone());
   pupilL.visible = pupilR.visible = false;
@@ -229,12 +229,12 @@ function createBodyGroup(scene: THREE.Scene, personIdx: number): BodyGroup {
   // Joint dots
   const jDotGeo = new THREE.SphereGeometry(0.018, 6, 4);
   const jDots = Array.from({ length: 17 }, () => {
-    const mat = new THREE.MeshBasicMaterial({ color: 0x88ddee, transparent: true, opacity: 0.7 });
+    const mat = new THREE.MeshBasicMaterial({ color: 0xc15632, transparent: true, opacity: 0.85 });
     const m = new THREE.Mesh(jDotGeo, mat); m.visible = false; scene.add(m); return m;
   });
 
   // Skeleton lines
-  const skelMat = new THREE.LineBasicMaterial({ color: 0x55ccdd, transparent: true, opacity: 0.25 });
+  const skelMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 });
   const skelLines = BONES.map(([a, b]) => {
     const g = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
     const l = new THREE.Line(g, skelMat); l.visible = false; scene.add(l); return { line: l, a, b };
@@ -306,7 +306,7 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
       const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
       renderer.setSize(W(), H());
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0x080c16);
+      renderer.setClearColor(0x000000);
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -314,16 +314,16 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
       container.appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x080c16);
-      scene.fog = new THREE.FogExp2(0x080c16, 0.018);
+      scene.background = new THREE.Color(0x000000);
+      scene.fog = new THREE.FogExp2(0x000000, 0.018);
 
       const camera = new THREE.PerspectiveCamera(45, W() / H(), 0.1, 200);
       camera.position.set(0, 1.4, 3.5);
       camera.lookAt(0, 0.9, 0);
 
       // --- Lighting ---
-      scene.add(new THREE.AmbientLight(0x223344, 0.5));
-      const key = new THREE.DirectionalLight(0xddeeff, 1.0);
+      scene.add(new THREE.AmbientLight(0x333333, 0.5));
+      const key = new THREE.DirectionalLight(0xffffff, 1.0);
       key.position.set(2, 5, 3);
       key.castShadow = true;
       key.shadow.mapSize.set(1024, 1024);
@@ -332,25 +332,25 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
       key.shadow.camera.top = 3; key.shadow.camera.bottom = -1;
       scene.add(key);
 
-      const rim = new THREE.PointLight(0x32b8c6, 1.5, 12);
+      const rim = new THREE.PointLight(0xc15632, 1.5, 12);
       rim.position.set(-1.5, 2.5, -2); scene.add(rim);
-      const fill = new THREE.PointLight(0x554488, 0.5, 8);
+      const fill = new THREE.PointLight(0x553322, 0.5, 8);
       fill.position.set(1.5, 0.8, 2.5); scene.add(fill);
-      const under = new THREE.PointLight(0x225566, 0.4, 5);
+      const under = new THREE.PointLight(0x331a10, 0.4, 5);
       under.position.set(0, 0.1, 1); scene.add(under);
 
       // --- Ground ---
       const groundGeo = new THREE.PlaneGeometry(20, 20);
-      const groundMat = new THREE.MeshStandardMaterial({ color: 0x0a0e1a, roughness: 0.9, metalness: 0.1 });
+      const groundMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.9, metalness: 0.1 });
       const ground = new THREE.Mesh(groundGeo, groundMat);
       ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
-      const gridH = new THREE.GridHelper(20, 40, 0x1a3050, 0x0e1826);
+      const gridH = new THREE.GridHelper(20, 40, 0x6b2e1a, 0x1c1c1c);
       gridH.position.y = 0.002; scene.add(gridH);
 
       // --- Signal field (20x20) ---
       const GS = 20;
       const cellGeo = new THREE.PlaneGeometry(0.38, 0.38);
-      const cellMat = new THREE.MeshBasicMaterial({ color: 0x32b8c6, transparent: true, opacity: 0.25, side: THREE.DoubleSide });
+      const cellMat = new THREE.MeshBasicMaterial({ color: 0xc15632, transparent: true, opacity: 0.25, side: THREE.DoubleSide });
       const sigGrid = new THREE.InstancedMesh(cellGeo, cellMat, GS * GS);
       sigGrid.rotation.x = -Math.PI / 2; sigGrid.position.y = 0.005;
       const dum = new THREE.Object3D();
@@ -358,7 +358,7 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
         dum.position.set((x - GS / 2) * 0.4, (z - GS / 2) * 0.4, 0);
         dum.updateMatrix();
         sigGrid.setMatrixAt(z * GS + x, dum.matrix);
-        sigGrid.setColorAt(z * GS + x, new THREE.Color(0x080c16));
+        sigGrid.setColorAt(z * GS + x, new THREE.Color(0x000000));
       }
       sigGrid.instanceMatrix.needsUpdate = true;
       if (sigGrid.instanceColor) sigGrid.instanceColor.needsUpdate = true;
@@ -368,7 +368,7 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
       const nodeGeo = new THREE.OctahedronGeometry(0.08, 1);
       const nodeMs: THREE.Mesh[] = [];
       for (let i = 0; i < 8; i++) {
-        const mat = new THREE.MeshStandardMaterial({ color: 0x00ff88, emissive: 0x00ff88, emissiveIntensity: 0.7, wireframe: true });
+        const mat = new THREE.MeshStandardMaterial({ color: 0xc15632, emissive: 0xc15632, emissiveIntensity: 0.7, wireframe: true });
         const m = new THREE.Mesh(nodeGeo, mat); m.visible = false; scene.add(m); nodeMs.push(m);
       }
 
@@ -379,20 +379,20 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
 
       // Heart ring (shared, positioned on person 0)
       const hrGeo = new THREE.TorusGeometry(0.18, 0.006, 8, 32);
-      const hrMat = new THREE.MeshBasicMaterial({ color: 0xff3355, transparent: true, opacity: 0 });
+      const hrMat = new THREE.MeshBasicMaterial({ color: 0xe5484d, transparent: true, opacity: 0 });
       const hrRing = new THREE.Mesh(hrGeo, hrMat); hrRing.visible = false; scene.add(hrRing);
 
       // Breathing rings (on person 0)
       const brRings = [0.22, 0.28, 0.34].map((r) => {
         const geo = new THREE.TorusGeometry(r, 0.003, 6, 32);
-        const mat = new THREE.MeshBasicMaterial({ color: 0x44ddaa, transparent: true, opacity: 0 });
+        const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
         const m = new THREE.Mesh(geo, mat); m.visible = false; scene.add(m); return m;
       });
 
       // WiFi pulse rings
       const wifiRings = [1.0, 1.8, 2.6].map((r) => {
         const geo = new THREE.TorusGeometry(r, 0.01, 6, 48);
-        const mat = new THREE.MeshBasicMaterial({ color: 0x32b8c6, transparent: true, opacity: 0.15 });
+        const mat = new THREE.MeshBasicMaterial({ color: 0xc15632, transparent: true, opacity: 0.15 });
         const m = new THREE.Mesh(geo, mat); m.rotation.x = Math.PI / 2; m.position.y = 0.01; scene.add(m); return m;
       });
 
@@ -406,7 +406,7 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
         pA[i * 3 + 2] = (Math.random() - 0.5) * 12;
       }
       pGeo.setAttribute('position', new THREE.BufferAttribute(pA, 3));
-      scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x3399bb, size: 0.018, transparent: true, opacity: 0.25 })));
+      scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.018, transparent: true, opacity: 0.25 })));
 
       // --- HUD ---
       const hudC = document.createElement('canvas'); hudC.width = 640; hudC.height = 128;
@@ -663,10 +663,9 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
           const gx = sf.grid_size[0], gz = sf.grid_size[2];
           for (let zi = 0; zi < Math.min(gz, GS); zi++) for (let xi = 0; xi < Math.min(gx, GS); xi++) {
             const v = sf.values[zi * gx + xi] || 0;
-            if (v < 0.25) hc.setRGB(0.03, 0.05 + v * 1.8, 0.08 + v * 1.8);
-            else if (v < 0.5) hc.setRGB(0.03, 0.2 + (v - 0.25) * 2.4, 0.5 - (v - 0.25) * 1.2);
-            else if (v < 0.75) hc.setRGB((v - 0.5) * 4, 0.7 + (v - 0.5) * 0.6, 0.1);
-            else hc.setRGB(1, 1 - (v - 0.75) * 3, 0.05);
+            // black -> burnt orange -> white, matching the app's heat ramp
+            if (v < 0.5) { const t = v * 2; hc.setRGB(0.76 * t, 0.34 * t, 0.2 * t); }
+            else { const t = (v - 0.5) * 2; hc.setRGB(0.76 + 0.24 * t, 0.34 + 0.66 * t, 0.2 + 0.8 * t); }
             sigGrid.setColorAt(zi * GS + xi, hc);
           }
           if (sigGrid.instanceColor) sigGrid.instanceColor.needsUpdate = true;
@@ -688,25 +687,25 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
         if (ctx && fr) {
           ctx.clearRect(0, 0, 640, 128);
           ctx.font = 'bold 14px "SF Mono", Menlo, monospace';
-          ctx.fillStyle = '#32b8c6';
-          ctx.fillText(`WIFI-DENSEPOSE  [${(fr.source || '--').toUpperCase()}]`, 12, 20);
+          ctx.fillStyle = '#C15632';
+          ctx.fillText(`VTLO_EYESOFGOD  [${(fr.source || '--').toUpperCase()}]`, 12, 20);
           ctx.font = '12px "SF Mono", Menlo, monospace';
-          ctx.fillStyle = '#7799aa';
+          ctx.fillStyle = '#A8A8A8';
           ctx.fillText(`Nodes: ${(fr.nodes || []).length}   RSSI: ${rssi.toFixed(1)} dBm   Motion: ${mot}   Conf: ${(conf * 100).toFixed(0)}%`, 12, 42);
           if (vs) {
             const br = Number(vs.breathing_bpm ?? vs.breathing_rate_bpm ?? 0);
             if (br > 0 || hrBpm > 0) {
-              ctx.fillStyle = '#44ddaa';
+              ctx.fillStyle = '#FFFFFF';
               ctx.fillText(`Breathing: ${br.toFixed(1)} bpm    Heart: ${hrBpm.toFixed(1)} bpm`, 12, 62);
             }
           }
           const anyShow = bodies.some((b) => b.fadeIn > 0.01);
           if (anyShow) {
-            ctx.fillStyle = pres ? (mot === 'active' ? '#ff8844' : '#44bbcc') : '#556677';
+            ctx.fillStyle = pres ? (mot === 'active' ? '#C15632' : '#FFFFFF') : '#5A5A5A';
             const mBar = Math.min(20, Math.round(mPow * 40));
             const mBarStr = '\u2588'.repeat(mBar) + '\u2591'.repeat(20 - mBar);
             ctx.fillText(`Motion: [${mBarStr}] ${(mPow * 100).toFixed(0)}%`, 12, 82);
-            ctx.fillStyle = nPersons > 1 ? '#ffaa44' : '#556677';
+            ctx.fillStyle = nPersons > 1 ? '#E8A33D' : '#5A5A5A';
             ctx.font = '10px "SF Mono", Menlo, monospace';
             ctx.fillText(`Persons: ${nPersons}   Pose: procedural (CSI-driven)`, 12, 100);
           }
@@ -738,10 +737,10 @@ export const GaussianSplatWebViewWeb = ({ onReady, onFps, onError, frame }: Prop
 
   return (
     <View style={styles.container}>
-      <div ref={containerRef} style={{ width: '100%', height: '100%', backgroundColor: '#080c16' }} />
+      <div ref={containerRef} style={{ width: '100%', height: '100%', backgroundColor: '#000000' }} />
     </View>
   );
 };
 
-const styles = StyleSheet.create({ container: { flex: 1, backgroundColor: '#080c16' } });
+const styles = StyleSheet.create({ container: { flex: 1, backgroundColor: '#000000' } });
 export default GaussianSplatWebViewWeb;
