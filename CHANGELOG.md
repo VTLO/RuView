@@ -71,6 +71,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `docs/` here as the design record of the incubation.
 
 ### Fixed
+- **Mobile app: Android release bundle failed to build.** `ui/mobile/src/services/rssi.service.android.ts`
+  imported the non-existent module `@react-native-wifi-reborn` (masked by a hand-written type shim),
+  so Metro aborted `createBundleReleaseJsAndAssets` and no standalone APK could be produced. Now
+  imports `react-native-wifi-reborn` and uses the package's own typings; shim removed.
 - **README: corrected the camera-supervised pose-accuracy claim.** The README stated
   "92.9% PCK@20" for camera-supervised training; that figure does not appear in
   ADR-079 and is ~2.6× the ADR's own success target (>35% PCK@20). ADR-079 phases
