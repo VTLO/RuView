@@ -66,6 +66,15 @@ npx expo start --web
 
 Open `http://localhost:8081` in your browser. The app starts in simulation mode with synthetic pose and vital sign data.
 
+#### Static web demo build
+
+```bash
+cd ui/mobile
+npm run build:web:demo   # -> dist/web (static files; serve over HTTP, e.g. `npx serve dist/web`)
+```
+
+`EXPO_PUBLIC_DEMO_MODE=true` makes **Demo Mode** the default: the app never contacts a server and streams simulated data on every tab. Users can switch it off in **Settings → Server → Demo Mode** to connect to a real sensing server.
+
 ### Android
 
 ```bash

@@ -17,6 +17,11 @@ class WsService {
   private status: ConnectionStatus = 'disconnected';
 
   connect(url: string): void {
+    if (url !== this.targetUrl) {
+      // Target changed (e.g. demo mode toggled): drop the old socket and pending retry.
+      this.clearReconnectTimer();
+      this.closeSocket();
+    }
     this.targetUrl = url;
     this.active = true;
     this.reconnectAttempt = 0;
@@ -59,6 +64,9 @@ class WsService {
       };
 
       socket.onclose = (evt) => {
+        if (this.ws !== socket) {
+          return;
+        }
         this.ws = null;
         if (!this.active) {
           this.handleStatusChange('disconnected');
@@ -79,10 +87,7 @@ class WsService {
     this.active = false;
     this.clearReconnectTimer();
     this.stopSimulation();
-    if (this.ws) {
-      this.ws.close(1000, 'client disconnect');
-      this.ws = null;
-    }
+    this.closeSocket();
     this.handleStatusChange('disconnected');
   }
 
@@ -151,6 +156,15 @@ class WsService {
       clearInterval(this.simulationTimer);
       this.simulationTimer = null;
     }
+  }
+
+  private closeSocket(): void {
+    const socket = this.ws;
+    if (!socket) {
+      return;
+    }
+    this.ws = null;
+    socket.close(1000, 'client disconnect');
   }
 
   private clearReconnectTimer(): void {

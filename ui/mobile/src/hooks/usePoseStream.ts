@@ -14,19 +14,20 @@ export function usePoseStream(): UsePoseStreamResult {
   const lastFrame = usePoseStore((state) => state.lastFrame);
   const isSimulated = usePoseStore((state) => state.isSimulated);
   const serverUrl = useSettingsStore((state) => state.serverUrl);
+  const demoMode = useSettingsStore((state) => state.demoMode);
 
   useEffect(() => {
     const unsubscribe = wsService.subscribe((frame) => {
       usePoseStore.getState().handleFrame(frame);
     });
 
-    // Auto-connect to sensing server on mount
-    wsService.connect(serverUrl);
+    // Auto-connect to sensing server on mount; an empty URL makes wsService stream simulated frames.
+    wsService.connect(demoMode ? '' : serverUrl);
 
     return () => {
       unsubscribe();
     };
-  }, [serverUrl]);
+  }, [serverUrl, demoMode]);
 
   return { connectionStatus, lastFrame, isSimulated };
 }

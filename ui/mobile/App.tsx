@@ -13,18 +13,20 @@ import { RootNavigator } from './src/navigation/RootNavigator';
 
 export default function App() {
   const serverUrl = useSettingsStore((state) => state.serverUrl);
+  const demoMode = useSettingsStore((state) => state.demoMode);
   const rssiScanEnabled = useSettingsStore((state) => state.rssiScanEnabled);
 
   useEffect(() => {
     apiService.setBaseUrl(serverUrl);
     const unsubscribe = wsService.subscribe(usePoseStore.getState().handleFrame);
-    wsService.connect(serverUrl);
+    // Demo mode: an empty URL makes wsService stream simulated frames without a server.
+    wsService.connect(demoMode ? '' : serverUrl);
 
     return () => {
       unsubscribe();
       wsService.disconnect();
     };
-  }, [serverUrl]);
+  }, [serverUrl, demoMode]);
 
   useEffect(() => {
     if (!rssiScanEnabled) {
@@ -63,7 +65,10 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeProvider>
-          <NavigationContainer theme={navigationTheme}>
+          <NavigationContainer
+            theme={navigationTheme}
+            documentTitle={{ formatter: (options, route) => `${options?.title ?? route?.name ?? 'Home'} · VTLO_EyesOfGod` }}
+          >
             <RootNavigator />
           </NavigationContainer>
         </ThemeProvider>

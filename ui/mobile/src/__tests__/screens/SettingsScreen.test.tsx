@@ -80,6 +80,6 @@ describe('SettingsScreen', () => {
       </ThemeProvider>,
     );
     expect(screen.getByText('ABOUT')).toBeTruthy();
-    expect(screen.getByText('WiFi-DensePose Mobile v1.0.0')).toBeTruthy();
+    expect(screen.getByText('VTLO_EyesOfGod v1.0.0')).toBeTruthy();
   });
 });

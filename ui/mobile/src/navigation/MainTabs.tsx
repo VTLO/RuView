@@ -1,66 +1,18 @@
-import React, { Suspense } from 'react';
-import { ActivityIndicator } from 'react-native';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '../components/ThemedText';
-import { ThemedView } from '../components/ThemedView';
 import { colors } from '../theme/colors';
 import { useMatStore } from '../stores/matStore';
+import LiveScreen from '../screens/LiveScreen';
+import MATScreen from '../screens/MATScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import VitalsScreen from '../screens/VitalsScreen';
+import ZonesScreen from '../screens/ZonesScreen';
 import { MainTabsParamList } from './types';
 
-const createPlaceholder = (label: string) => {
-  const Placeholder = () => (
-    <ThemedView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <ThemedText preset="bodyLg">{label} screen not implemented yet</ThemedText>
-      <ThemedText preset="bodySm" color="textSecondary">
-        Placeholder shell
-      </ThemedText>
-    </ThemedView>
-  );
-  const LazyPlaceholder = React.lazy(async () => ({ default: Placeholder }));
-
-  const Wrapped = () => (
-    <Suspense
-      fallback={
-        <ThemedView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator color={colors.accent} />
-          <ThemedText preset="bodySm" color="textSecondary" style={{ marginTop: 8 }}>
-            Loading {label}
-          </ThemedText>
-        </ThemedView>
-      }
-    >
-      <LazyPlaceholder />
-    </Suspense>
-  );
-
-  return Wrapped;
-};
-
-const wrapLazy = (
-  loader: () => Promise<{ default: React.ComponentType }>,
-  label: string,
-) => {
-  const fallback = createPlaceholder(label);
-  return React.lazy(async () => {
-    try {
-      const module = await loader();
-      if (module?.default) {
-        return module;
-      }
-    } catch {
-      // keep fallback for shell-only screens
-    }
-    return { default: fallback } as { default: React.ComponentType };
-  });
-};
-
-const LiveScreen = wrapLazy(() => import('../screens/LiveScreen'), 'Live');
-const VitalsScreen = wrapLazy(() => import('../screens/VitalsScreen'), 'Vitals');
-const ZonesScreen = wrapLazy(() => import('../screens/ZonesScreen'), 'Zones');
-const MATScreen = wrapLazy(() => import('../screens/MATScreen'), 'MAT');
-const SettingsScreen = wrapLazy(() => import('../screens/SettingsScreen'), 'Settings');
-
+// Screens are imported statically: lazily-loaded tab chunks could hang forever in Suspense on web
+// once a second chunk had loaded. They are small; heavy 3D code is still split out inside LiveScreen.
 const toIconName = (routeName: keyof MainTabsParamList) => {
   switch (routeName) {
     case 'Live':
@@ -78,6 +30,8 @@ const toIconName = (routeName: keyof MainTabsParamList) => {
   }
 };
 
+const Tab = createBottomTabNavigator<MainTabsParamList>();
+
 const screens: ReadonlyArray<{ name: keyof MainTabsParamList; component: React.ComponentType }> = [
   { name: 'Live', component: LiveScreen },
   { name: 'Vitals', component: VitalsScreen },
@@ -85,14 +39,6 @@ const screens: ReadonlyArray<{ name: keyof MainTabsParamList; component: React.C
   { name: 'MAT', component: MATScreen },
   { name: 'Settings', component: SettingsScreen },
 ];
-
-const Tab = createBottomTabNavigator<MainTabsParamList>();
-
-const Suspended = ({ component: Component }: { component: React.ComponentType }) => (
-  <Suspense fallback={<ActivityIndicator color={colors.accent} />}>
-    <Component />
-  </Suspense>
-);
 
 export const MainTabs = () => {
   const matAlertCount = useMatStore((state) => state.alerts.length);
@@ -124,7 +70,7 @@ export const MainTabs = () => {
           options={{
             tabBarBadge: name === 'MAT' ? (matAlertCount > 0 ? matAlertCount : undefined) : undefined,
           }}
-          component={() => <Suspended component={component} />}
+          component={component}
         />
       ))}
     </Tab.Navigator>

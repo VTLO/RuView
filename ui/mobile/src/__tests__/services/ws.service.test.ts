@@ -109,6 +109,39 @@ describe('WsService', () => {
       expect(ws.getStatus()).toBe('simulated');
       ws.disconnect();
     });
+
+    it('closes an open server socket when switching to demo (empty URL)', () => {
+      const OrigWebSocket = globalThis.WebSocket;
+      const closed: number[] = [];
+
+      class MockWebSocket {
+        static OPEN = 1;
+        static CONNECTING = 0;
+        readyState = 0;
+        onopen: (() => void) | null = null;
+        onclose: ((evt: { code: number }) => void) | null = null;
+        onerror: (() => void) | null = null;
+        onmessage: (() => void) | null = null;
+        close(code: number) {
+          closed.push(code);
+          this.onclose?.({ code });
+        }
+      }
+
+      globalThis.WebSocket = MockWebSocket as any;
+      try {
+        const ws = createWsService();
+        ws.connect('http://192.168.1.10:3000');
+        expect(ws.getStatus()).toBe('connecting');
+
+        ws.connect('');
+        expect(closed).toEqual([1000]);
+        expect(ws.getStatus()).toBe('simulated');
+        ws.disconnect();
+      } finally {
+        globalThis.WebSocket = OrigWebSocket;
+      }
+    });
   });
 
   describe('subscribe and unsubscribe', () => {

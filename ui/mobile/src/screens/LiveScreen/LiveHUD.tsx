@@ -56,7 +56,7 @@ export const LiveHUD = memo(
           {/* App title */}
           <View style={styles.topLeft}>
             <ThemedText preset="labelLg" style={styles.appTitle}>
-              WiFi-DensePose
+              VTLO_EyesOfGod
             </ThemedText>
           </View>
 

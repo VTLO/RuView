@@ -10,6 +10,7 @@ import { wsService } from '@/services/ws.service';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { Alert, Pressable, Platform } from 'react-native';
 import { ThemePicker } from './ThemePicker';
+import { DemoModeToggle } from './DemoModeToggle';
 import { RssiToggle } from './RssiToggle';
 import { ServerUrlInput } from './ServerUrlInput';
 
@@ -84,7 +85,9 @@ export const SettingsScreen = () => {
   const serverUrl = useSettingsStore((state) => state.serverUrl);
   const rssiScanEnabled = useSettingsStore((state) => state.rssiScanEnabled);
   const theme = useSettingsStore((state) => state.theme);
+  const demoMode = useSettingsStore((state) => state.demoMode);
   const setServerUrl = useSettingsStore((state) => state.setServerUrl);
+  const setDemoMode = useSettingsStore((state) => state.setDemoMode);
   const setRssiScanEnabled = useSettingsStore((state) => state.setRssiScanEnabled);
   const setTheme = useSettingsStore((state) => state.setTheme);
 
@@ -100,9 +103,12 @@ export const SettingsScreen = () => {
   const handleSaveUrl = () => {
     const newUrl = draftUrl.trim();
     setServerUrl(newUrl);
+    apiService.setBaseUrl(newUrl);
+    if (demoMode) {
+      return;
+    }
     wsService.disconnect();
     wsService.connect(newUrl);
-    apiService.setBaseUrl(newUrl);
   };
 
   const handleOpenGitHub = async () => {
@@ -123,6 +129,8 @@ export const SettingsScreen = () => {
         }}
       >
         <GlowCard title="SERVER">
+          <DemoModeToggle enabled={demoMode} onChange={setDemoMode} />
+          <View style={{ height: spacing.md }} />
           <ServerUrlInput value={draftUrl} onChange={setDraftUrl} onSave={handleSaveUrl} />
         </GlowCard>
 
@@ -148,7 +156,7 @@ export const SettingsScreen = () => {
 
         <GlowCard title="ABOUT">
           <ThemedText preset="bodyMd" style={{ marginBottom: spacing.xs }}>
-            WiFi-DensePose Mobile v1.0.0
+            VTLO_EyesOfGod v1.0.0
           </ThemedText>
           <ThemedText
             preset="bodySm"
