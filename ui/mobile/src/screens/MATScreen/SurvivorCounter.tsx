@@ -52,7 +52,7 @@ const getBreakdown = (survivors: Survivor[]): Breakdown => {
 const BreakoutChip = ({ label, value, color }: { label: string; value: number; color: string }) => (
   <View
     style={{
-      backgroundColor: '#0D1117',
+      backgroundColor: colors.surface,
       borderRadius: 999,
       borderWidth: 1,
       borderColor: `${color}55`,
@@ -82,7 +82,7 @@ export const SurvivorCounter = ({ survivors }: SurvivorCounterProps) => {
         <BreakoutChip label="Delayed" value={breakdown.delayed} color={colors.warn} />
         <BreakoutChip label="Minimal" value={breakdown.minor} color={colors.success} />
         <BreakoutChip label="Expectant" value={breakdown.deceased} color={colors.textSecondary} />
-        <BreakoutChip label="Unknown" value={breakdown.unknown} color="#a0aec0" />
+        <BreakoutChip label="Unknown" value={breakdown.unknown} color={colors.textSecondary} />
       </View>
     </View>
   );

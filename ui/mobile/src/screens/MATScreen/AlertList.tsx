@@ -20,7 +20,7 @@ export const AlertList = ({ alerts }: AlertListProps) => {
           borderWidth: 1,
           borderColor: colors.border,
           borderRadius: 12,
-          backgroundColor: '#111827',
+          backgroundColor: colors.surface,
         }}
       >
         <ThemedText preset="bodyMd">No alerts — system nominal</ThemedText>

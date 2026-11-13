@@ -1,10 +1,19 @@
-# π RuView
+# VTLO_EyesOfGod
 
 <p align="center">
-  <a href="https://x.com/rUv/status/2037556932802761004">
-    <img src="assets/ruview-small-gemini.jpg" alt="RuView - WiFi DensePose" width="100%">
+  <a href="releases/mobile/">
+    <img src="assets/vtlo-eyesofgod-banner.gif" alt="VTLO_EyesOfGod — see through walls with WiFi" width="100%">
   </a>
 </p>
+
+### ⬇ Download VTLO_EyesOfGod
+
+| Platform | Download | Notes |
+|----------|----------|-------|
+| **Android** (arm64) | [VTLO_EyesOfGod-1.0.0-android-arm64.apk](releases/mobile/VTLO_EyesOfGod-1.0.0-android-arm64.apk?raw=1) | Standalone — sideload and open. Runs the built-in sensor feed out of the box; point it at a sensing server in **Settings**. |
+| **Web** | [VTLO_EyesOfGod-1.0.0-web.zip](releases/mobile/VTLO_EyesOfGod-1.0.0-web.zip?raw=1) | Static site — unzip and serve over HTTP (`npx serve .`). |
+
+Checksums: [`releases/mobile/SHA256SUMS`](releases/mobile/SHA256SUMS) · Source: [`ui/mobile`](ui/mobile/)
 
 > **Beta Software** — Under active development. APIs and firmware may change. Known limitations:
 > - ESP32-C3 and original ESP32 are not supported (single-core, insufficient for CSI DSP)
@@ -17,9 +26,9 @@
 
 **Turn ordinary WiFi into a spatial intelligence / sensing system.** Detect people, measure breathing and heart rate, track movement, and monitor rooms — through walls, in the dark, with no cameras or wearables. Just physics.
 
-### π RuView is a WiFi sensing platform that turns radio signals into spatial intelligence.
+### VTLO_EyesOfGod is a WiFi sensing platform that turns radio signals into spatial intelligence.
 
-Every WiFi router already fills your space with radio waves. When people move, breathe, or even sit still, they disturb those waves in measurable ways. RuView captures these disturbances using Channel State Information (CSI) from low-cost ESP32 sensors and turns them into actionable data: who's there, what they're doing, and whether they're okay.
+Every WiFi router already fills your space with radio waves. When people move, breathe, or even sit still, they disturb those waves in measurable ways. VTLO_EyesOfGod captures these disturbances using Channel State Information (CSI) from low-cost ESP32 sensors and turns them into actionable data: who's there, what they're doing, and whether they're okay.
 
 **What it senses:**
 - **Presence and occupancy** — detect people through walls, count them, track entries and exits
@@ -28,11 +37,11 @@ Every WiFi router already fills your space with radio waves. When people move, b
 - **Environment mapping** — RF fingerprinting identifies rooms, detects moved furniture, spots new objects
 - **Sleep quality** — overnight monitoring with sleep stage classification and apnea screening
 
-Built on [RuVector](https://github.com/ruvnet/ruvector/) and [Cognitum Seed](https://cognitum.one), RuView runs entirely on edge hardware — an ESP32 mesh (as low as $9 per node) paired with a Cognitum Seed for persistent memory, cryptographic attestation, and AI integration. No cloud, no cameras, no internet required.
+Built on [RuVector](https://github.com/ruvnet/ruvector/) and [Cognitum Seed](https://cognitum.one), VTLO_EyesOfGod runs entirely on edge hardware — an ESP32 mesh (as low as $9 per node) paired with a Cognitum Seed for persistent memory, cryptographic attestation, and AI integration. No cloud, no cameras, no internet required.
 
 The system learns each environment locally using spiking neural networks that adapt in under 30 seconds, with multi-frequency mesh scanning across 6 WiFi channels that uses your neighbors' routers as free radar illuminators. Every measurement is cryptographically attested via an Ed25519 witness chain.
 
-RuView also supports pose estimation (17 COCO keypoints via the WiFlow architecture), trained entirely without cameras using 10 sensor signals — a technique pioneered from the original *DensePose From WiFi* research at Carnegie Mellon University.
+VTLO_EyesOfGod also supports pose estimation (17 COCO keypoints via the WiFlow architecture), trained entirely without cameras using 10 sensor signals — a technique pioneered from the original *DensePose From WiFi* research at Carnegie Mellon University.
 
 ### Built for low-power edge applications
 
@@ -487,7 +496,7 @@ See [`docs/adr/ADR-024-contrastive-csi-embedding-model.md`](docs/adr/ADR-024-con
 
 ## 🧩 Claude Code & Codex Plugin
 
-RuView ships a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin (and Codex prompt mirror) that wraps the whole workflow — onboarding, ESP32 setup, configuration, sensing apps, model training, advanced multistatic sensing, CLI/API/WASM, mmWave radar, and witness verification — as 9 skills, 7 `/ruview-*` commands, and 3 agents. It lives in [`plugins/ruview/`](plugins/ruview/README.md); the marketplace manifest is [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) at the repo root.
+VTLO_EyesOfGod ships a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin (and Codex prompt mirror) that wraps the whole workflow — onboarding, ESP32 setup, configuration, sensing apps, model training, advanced multistatic sensing, CLI/API/WASM, mmWave radar, and witness verification — as 9 skills, 7 `/ruview-*` commands, and 3 agents. It lives in [`plugins/ruview/`](plugins/ruview/README.md); the marketplace manifest is [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) at the repo root.
 
 ```bash
 # In Claude Code — add this repo as a plugin marketplace, then install:

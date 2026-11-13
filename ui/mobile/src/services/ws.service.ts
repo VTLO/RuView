@@ -6,6 +6,17 @@ import type { ConnectionStatus, SensingFrame } from '@/types/sensing';
 
 type FrameListener = (frame: SensingFrame) => void;
 
+export type ConnectOptions = {
+  /**
+   * Demo mode: stream simulated frames but present them exactly like a live ESP32 feed
+   * (status `connected`, source `esp32`). Without it, fallback simulation is flagged as `simulated`.
+   */
+  demo?: boolean;
+};
+
+/** Frame source reported for demo frames — matches the sensing server's live ESP32 source. */
+export const DEMO_FRAME_SOURCE = 'esp32';
+
 class WsService {
   private ws: WebSocket | null = null;
   private listeners = new Set<FrameListener>();
@@ -15,14 +26,28 @@ class WsService {
   private targetUrl = '';
   private active = false;
   private status: ConnectionStatus = 'disconnected';
+  private demo = false;
 
-  connect(url: string): void {
+  connect(url: string, options: ConnectOptions = {}): void {
+    const demo = options.demo === true;
+    if (demo !== this.demo) {
+      this.stopSimulation();
+    }
+    this.demo = demo;
+    if (demo) {
+      url = '';
+    }
+    if (url !== this.targetUrl) {
+      // Target changed (e.g. demo mode toggled): drop the old socket and pending retry.
+      this.clearReconnectTimer();
+      this.closeSocket();
+    }
     this.targetUrl = url;
     this.active = true;
     this.reconnectAttempt = 0;
 
     if (!url) {
-      this.handleStatusChange('simulated');
+      this.handleStatusChange(this.simulatedStatus());
       this.startSimulation();
       return;
     }
@@ -59,6 +84,9 @@ class WsService {
       };
 
       socket.onclose = (evt) => {
+        if (this.ws !== socket) {
+          return;
+        }
         this.ws = null;
         if (!this.active) {
           this.handleStatusChange('disconnected');
@@ -79,10 +107,7 @@ class WsService {
     this.active = false;
     this.clearReconnectTimer();
     this.stopSimulation();
-    if (this.ws) {
-      this.ws.close(1000, 'client disconnect');
-      this.ws = null;
-    }
+    this.closeSocket();
     this.handleStatusChange('disconnected');
   }
 
@@ -138,12 +163,17 @@ class WsService {
       return;
     }
     this.simulationTimer = setInterval(() => {
-      this.handleStatusChange('simulated');
-      const frame = generateSimulatedData();
+      this.handleStatusChange(this.simulatedStatus());
+      const generated = generateSimulatedData();
+      const frame = this.demo ? { ...generated, source: DEMO_FRAME_SOURCE } : generated;
       this.listeners.forEach((listener) => {
         listener(frame);
       });
     }, SIMULATION_TICK_INTERVAL_MS);
+  }
+
+  private simulatedStatus(): ConnectionStatus {
+    return this.demo ? 'connected' : 'simulated';
   }
 
   private stopSimulation(): void {
@@ -151,6 +181,15 @@ class WsService {
       clearInterval(this.simulationTimer);
       this.simulationTimer = null;
     }
+  }
+
+  private closeSocket(): void {
+    const socket = this.ws;
+    if (!socket) {
+      return;
+    }
+    this.ws = null;
+    socket.close(1000, 'client disconnect');
   }
 
   private clearReconnectTimer(): void {

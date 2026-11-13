@@ -1,10 +1,11 @@
-import { useSettingsStore } from '@/stores/settingsStore';
+import { DEFAULT_DEMO_MODE, useSettingsStore } from '@/stores/settingsStore';
 
 describe('useSettingsStore', () => {
   beforeEach(() => {
     // Reset to defaults by manually setting all values
     useSettingsStore.setState({
       serverUrl: 'http://localhost:3000',
+      demoMode: false,
       rssiScanEnabled: false,
       theme: 'system',
       alertSoundEnabled: true,
@@ -82,6 +83,19 @@ describe('useSettingsStore', () => {
       useSettingsStore.getState().setAlertSoundEnabled(false);
       useSettingsStore.getState().setAlertSoundEnabled(true);
       expect(useSettingsStore.getState().alertSoundEnabled).toBe(true);
+    });
+  });
+
+  describe('setDemoMode', () => {
+    it('is off by default when EXPO_PUBLIC_DEMO_MODE is unset', () => {
+      expect(DEFAULT_DEMO_MODE).toBe(false);
+    });
+
+    it('toggles demo mode on and off', () => {
+      useSettingsStore.getState().setDemoMode(true);
+      expect(useSettingsStore.getState().demoMode).toBe(true);
+      useSettingsStore.getState().setDemoMode(false);
+      expect(useSettingsStore.getState().demoMode).toBe(false);
     });
   });
 });

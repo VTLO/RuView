@@ -1,7 +1,7 @@
 import { StyleProp, ViewStyle } from 'react-native';
 import WebView, { type WebViewMessageEvent } from 'react-native-webview';
 import type { RefObject } from 'react';
-import MAT_DASHBOARD_HTML from '@/assets/webview/mat-dashboard.html';
+import { MAT_DASHBOARD_HTML } from '@/assets/webview/matDashboard.generated';
 
 type MatWebViewProps = {
   webViewRef: RefObject<WebView | null>;

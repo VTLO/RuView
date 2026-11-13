@@ -13,18 +13,20 @@ import { RootNavigator } from './src/navigation/RootNavigator';
 
 export default function App() {
   const serverUrl = useSettingsStore((state) => state.serverUrl);
+  const demoMode = useSettingsStore((state) => state.demoMode);
   const rssiScanEnabled = useSettingsStore((state) => state.rssiScanEnabled);
 
   useEffect(() => {
     apiService.setBaseUrl(serverUrl);
     const unsubscribe = wsService.subscribe(usePoseStore.getState().handleFrame);
-    wsService.connect(serverUrl);
+    // Demo mode: wsService streams generated frames presented as a live feed, without a server.
+    wsService.connect(serverUrl, { demo: demoMode });
 
     return () => {
       unsubscribe();
       wsService.disconnect();
     };
-  }, [serverUrl]);
+  }, [serverUrl, demoMode]);
 
   useEffect(() => {
     if (!rssiScanEnabled) {
@@ -51,11 +53,11 @@ export default function App() {
     ...DarkTheme,
     colors: {
       ...DarkTheme.colors,
-      background: '#0A0E1A',
-      card: '#0D1117',
-      text: '#E2E8F0',
-      border: '#1E293B',
-      primary: '#32B8C6',
+      background: '#000000',
+      card: '#000000',
+      text: '#FFFFFF',
+      border: '#2B2B2B',
+      primary: '#C15632',
     },
   };
 
@@ -63,7 +65,10 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeProvider>
-          <NavigationContainer theme={navigationTheme}>
+          <NavigationContainer
+            theme={navigationTheme}
+            documentTitle={{ formatter: (options, route) => `${options?.title ?? route?.name ?? 'Home'} · VTLO_EyesOfGod` }}
+          >
             <RootNavigator />
           </NavigationContainer>
         </ThemeProvider>

@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Mobile app: web demo build + Demo Mode (`ui/mobile`).** New `npm run build:web:demo` exports a
+  static web app with Demo Mode on by default (`EXPO_PUBLIC_DEMO_MODE=true`); a Settings toggle switches
+  between simulated data and a real sensing server on any platform. The MAT dashboard now works on web via
+  an iframe implementation of the WebView message bridge (`MatWebView.web.tsx`). App renamed to
+  **VTLO_EyesOfGod** with a new icon set.
+- **VTLO_EyesOfGod visual identity + downloads.** UI restyled to the icon's palette (black field, white
+  line art, burnt-orange `#C15632` accent) across theme tokens, 3D Live scene, heat ramp
+  (charcoal → orange → white), MAT and splat webviews; logo in the Live header. Demo Mode now presents the
+  built-in feed as a live ESP32 connection (no simulation banners/overlay); fallback simulation outside
+  Demo Mode is still flagged. Prebuilt standalone Android APK and web zip published under
+  `releases/mobile/` (with `SHA256SUMS`), and the README hero is a new animated banner
+  (`assets/vtlo-eyesofgod-banner.gif`).
 - **Real-time CSI introspection / low-latency tap on `wifi-densepose-sensing-server` (ADR-099).**
   New `wifi_densepose_sensing_server::introspection` module wires
   [midstream](https://github.com/ruvnet/midstream)'s `temporal-attractor` (Lyapunov +
@@ -71,6 +83,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `docs/` here as the design record of the incubation.
 
 ### Fixed
+- **Mobile app: tabs stuck on a spinner on web.** Lazily-loaded tab screens could suspend forever after
+  a second screen chunk had loaded; tab screens are now imported statically. Turning Demo Mode on or
+  changing the server URL now closes the previous WebSocket instead of leaving it reconnecting.
+- **Mobile app: Android release bundle failed to build.** `ui/mobile/src/services/rssi.service.android.ts`
+  imported the non-existent module `@react-native-wifi-reborn` (masked by a hand-written type shim),
+  so Metro aborted `createBundleReleaseJsAndAssets` and no standalone APK could be produced. Now
+  imports `react-native-wifi-reborn` and uses the package's own typings; shim removed.
 - **README: corrected the camera-supervised pose-accuracy claim.** The README stated
   "92.9% PCK@20" for camera-supervised training; that figure does not appear in
   ADR-079 and is ~2.6× the ADR's own success target (>35% PCK@20). ADR-079 phases

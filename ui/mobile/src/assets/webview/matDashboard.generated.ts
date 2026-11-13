@@ -1,0 +1,2 @@
+// AUTO-GENERATED: do not edit
+export const MAT_DASHBOARD_HTML = "<!DOCTYPE html>\n<html>\n<head>\n  <title>MAT Dashboard</title>\n  <style>\n    body { margin: 0; padding: 20px; background: #000; color: #fff; font-family: monospace; }\n  </style>\n</head>\n<body>\n  <h1>VTLO_EyesOfGod MAT</h1>\n  <p>Mass Casualty Assessment Tool</p>\n</body>\n</html>";

@@ -1,5 +1,5 @@
 import type { RssiService, WifiNetwork } from './rssi.service';
-import WifiManager from '@react-native-wifi-reborn';
+import WifiManager from 'react-native-wifi-reborn';
 
 type NativeWifiNetwork = {
   SSID?: string;

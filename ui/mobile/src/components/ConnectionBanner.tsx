@@ -11,23 +11,23 @@ const resolveState = (status: ConnectionState) => {
   if (status === 'connected') {
     return {
       label: 'LIVE STREAM',
-      backgroundColor: '#0F6B2A',
-      textColor: '#E2FFEA',
+      backgroundColor: '#1A1A1A',
+      textColor: '#FFFFFF',
     };
   }
 
   if (status === 'disconnected') {
     return {
       label: 'DISCONNECTED',
-      backgroundColor: '#8A1E2A',
-      textColor: '#FFE3E7',
+      backgroundColor: '#5C1414',
+      textColor: '#FFE3E3',
     };
   }
 
   return {
     label: 'SIMULATED DATA',
-    backgroundColor: '#9A5F0C',
-    textColor: '#FFF3E1',
+    backgroundColor: '#6B2E1A',
+    textColor: '#FFFFFF',
   };
 };
 
